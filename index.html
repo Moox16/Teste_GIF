@@ -9,58 +9,26 @@
 </head>
 <body>
 
-  <script>
-    AFRAME.registerComponent('gif-material', {
-      schema: { src: { type: 'string' } },
-      init: function () {
-        var mesh = this.el.getObject3D('mesh');
-        var img = new Image();
-        img.src = this.data.src;
-        var canvas = document.createElement('canvas');
-        var ctx = canvas.getContext('2d');
-        var texture = new THREE.CanvasTexture(canvas);
-        var self = this;
-
-        img.onload = function () {
-          canvas.width  = img.width;
-          canvas.height = img.height;
-          function draw() {
-            ctx.drawImage(img, 0, 0);
-            texture.needsUpdate = true;
-            requestAnimationFrame(draw);
-          }
-          draw();
-          if (mesh) {
-            mesh.material.map = texture;
-            mesh.material.needsUpdate = true;
-          }
-        };
-
-        this.el.addEventListener('object3dset', function () {
-          mesh = self.el.getObject3D('mesh');
-          if (mesh && texture) {
-            mesh.material.map = texture;
-            mesh.material.needsUpdate = true;
-          }
-        });
-      }
-    });
-  </script>
-
   <a-scene
     mindar-image="imageTargetSrc: ./targets.mind"
     vr-mode-ui="enabled: false"
     device-orientation-permission-ui="enabled: false">
 
+    <a-assets>
+      <video id="myvideo" src="./animation.mp4"
+        autoplay loop muted playsinline
+        webkit-playsinline>
+      </video>
+    </a-assets>
+
     <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
     <a-entity mindar-image-target="targetIndex: 0">
-      <a-plane
+      <a-video
+        src="#myvideo"
         position="0 0 0"
-        width="1" height="1"
-        material="transparent: true; side: double"
-        gif-material="src: ./animation.gif">
-      </a-plane>
+        width="1" height="1">
+      </a-video>
     </a-entity>
 
   </a-scene>
