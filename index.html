@@ -7,63 +7,31 @@
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
   <style>html, body { margin: 0; overflow: hidden; }</style>
 </head>
-
 <body>
 
   <a-scene
     mindar-image="imageTargetSrc: ./targets.mind"
     vr-mode-ui="enabled: false"
-    device-orientation-permission-ui="enabled: false"
-    embedded>
+    device-orientation-permission-ui="enabled: false">
 
     <a-assets>
-      <video id="myvideo"
-        src="./animation.mp4"
-        loop
-        muted
-        playsinline
-        webkit-playsinline
-        preload="auto"
-        crossorigin="anonymous">
+      <video id="myvideo" src="./animation.mp4"
+        autoplay loop muted playsinline
+        webkit-playsinline>
       </video>
     </a-assets>
 
     <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-    <a-entity mindar-image-target="targetIndex: 0" id="target0">
+    <a-entity mindar-image-target="targetIndex: 0">
       <a-video
         src="#myvideo"
         position="0 0 0"
-        width="1"
-        height="0.6">
+        width="1" height="1">
       </a-video>
     </a-entity>
 
   </a-scene>
-
-  <script>
-    const video = document.querySelector("#myvideo");
-    const target = document.querySelector("#target0");
-
-    // Ensure video is ready
-    video.pause();
-
-    // Play when marker is found (fixes Xiaomi / Android issues)
-    target.addEventListener("targetFound", () => {
-      video.currentTime = 0;
-      video.play().catch(() => {});
-    });
-
-    // Pause when marker is lost
-    target.addEventListener("targetLost", () => {
-      video.pause();
-    });
-
-    // Extra fallback: allow tap to start (iPhone / strict browsers)
-    document.body.addEventListener("click", () => {
-      video.play().catch(() => {});
-    });
-  </script>
 
 </body>
 </html>
